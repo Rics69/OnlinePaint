@@ -1,3 +1,5 @@
+import '../styles/toolbar.scss';
+
 const ToolBar = () => {
     return (
         <div className="toolbar">

@@ -1,6 +1,8 @@
+import '../styles/toolbar.scss';
+
 const SettingBar = () => {
     return (
-        <div className="toolbar">
+        <div className="setting-bar">
 
         </div>
     );
