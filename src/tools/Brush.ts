@@ -1,6 +1,8 @@
 import Tool from "./Tool.ts";
 
 export default class Brush extends Tool {
+    mouseDown: boolean = false;
+
     constructor(canvas: HTMLCanvasElement) {
         super(canvas);
         this.listen();
@@ -12,25 +14,26 @@ export default class Brush extends Tool {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this);
     }
 
-    mouseUpHandler(e) {
+    mouseUpHandler() {
         this.mouseDown = false;
     }
 
-    mouseDownHandler(e) {
+    mouseDownHandler(e: MouseEvent) {
         this.mouseDown = true;
         this.ctx.beginPath()
-        this.ctx.moveTo(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
+        const target = e.target as HTMLCanvasElement;
+        this.ctx.moveTo(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
     }
 
-    mouseMoveHandler(e) {
+    mouseMoveHandler(e: MouseEvent) {
         if(this.mouseDown){
-            this.draw(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop);
+            const target = e.target as HTMLCanvasElement;
+            this.draw(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
         }
     }
 
     draw(x: number, y: number){
         this.ctx.lineTo(x, y);
         this.ctx.stroke();
-        console.log('draw');
     }
 }
