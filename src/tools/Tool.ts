@@ -18,6 +18,10 @@ export default class Tool{
         this.ctx.strokeStyle = color;
     }
 
+    set lineWidth(width){
+        this.ctx.lineWidth = width;
+    }
+
     destroyEvents() {
         this.canvas.onmousemove = null;
         this.canvas.onmousedown = null;
