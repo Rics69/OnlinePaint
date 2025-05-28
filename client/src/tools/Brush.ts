@@ -35,7 +35,6 @@ export default class Brush extends Tool {
     mouseMoveHandler(e: MouseEvent) {
         if(this.mouseDown){
             const target = e.target as HTMLCanvasElement;
-            // this.draw(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
             this.socket.send(JSON.stringify({
                 method: "draw",
                 id: this.id,

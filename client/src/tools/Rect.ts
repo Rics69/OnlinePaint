@@ -5,9 +5,11 @@ export default class Rect extends Tool {
     startX: number = 0;
     startY: number = 0;
     saved: string;
+    width: number;
+    height: number;
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas);
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+        super(canvas, socket, id);
         this.listen();
     }
 
@@ -17,8 +19,20 @@ export default class Rect extends Tool {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this);
     }
 
-    mouseUpHandler() {
+    mouseUpHandler(e) {
         this.mouseDown = false;
+        const target = e.target as HTMLCanvasElement;
+        this.socket.send(JSON.stringify({
+            method: "draw",
+            id: this.id,
+            figure: {
+                type: "rect",
+                x: this.startX,
+                y: this.startY,
+                width: this.width,
+                height: this.height
+            }
+        }))
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -35,9 +49,9 @@ export default class Rect extends Tool {
             const target = e.target as HTMLCanvasElement;
             let currentX = e.pageX - target.offsetLeft;
             let currentY = e.pageY - target.offsetTop;
-            let width = currentX - this.startX;
-            let height = currentY - this.startY;
-            this.draw(this.startX, this.startY, width, height);
+            this.width = currentX - this.startX;
+            this.height = currentY - this.startY;
+            this.draw(this.startX, this.startY, this.width, this.height);
         }
     }
 
