@@ -30,7 +30,8 @@ export default class Rect extends Tool {
                 x: this.startX,
                 y: this.startY,
                 width: this.width,
-                height: this.height
+                height: this.height,
+                color: this.ctx.fillStyle
             }
         }))
     }
@@ -45,7 +46,7 @@ export default class Rect extends Tool {
     }
 
     mouseMoveHandler(e: MouseEvent) {
-        if(this.mouseDown){
+        if (this.mouseDown) {
             const target = e.target as HTMLCanvasElement;
             let currentX = e.pageX - target.offsetLeft;
             let currentY = e.pageY - target.offsetTop;
@@ -55,7 +56,7 @@ export default class Rect extends Tool {
         }
     }
 
-    draw(x: number, y: number, w: number, h: number ){
+    draw(x: number, y: number, w: number, h: number) {
         const img = new Image();
         img.src = this.saved;
         img.onload = () => {
@@ -66,5 +67,13 @@ export default class Rect extends Tool {
             this.ctx.fill();
             this.ctx.stroke();
         }
+    }
+
+    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.rect(x, y, w, h);
+        ctx.fill();
+        ctx.stroke();
     }
 }
