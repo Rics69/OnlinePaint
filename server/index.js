@@ -2,8 +2,14 @@ const express = require('express')
 const app = express()
 const WSServer = require('express-ws')(app)
 const aWss = WSServer.getWss()
+const cors = require('cors')
+const fs = require('fs')
+const path = require('path')
 
 const PORT = process.env.PORT || 8080
+
+app.use(cors())
+app.use(express.json())
 
 app.ws('/', (ws, req) => {
     console.log("Подключение установлено")
@@ -19,6 +25,25 @@ app.ws('/', (ws, req) => {
                 break
         }
     })
+})
+
+app.post('/image', (req, res) => {
+    try {
+        const data = req.body.img.replace('data:image/png;base64,', '')
+        fs.writeFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`), data, 'base64')
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json('error')
+    }
+})
+
+app.get('/image', (req, res) => {
+    try {
+
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json('error')
+    }
 })
 
 app.listen(PORT, () => console.log(`server started on port ${PORT}`))
